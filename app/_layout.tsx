@@ -1,19 +1,24 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Stack } from 'expo-router'
+import { Slot } from 'expo-router'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const AuthLayout = () => {
+const RootLayout = () => {
+    const insets = useSafeAreaInsets()
+    console.log(insets)
+
     return (
-        <Stack>
-            <Stack.Screen name="login" options={
-                {title:"Login"}
-            } />
-             <Stack.Screen name="regiter" options={
-                {title:"Register"}
-            } />
-
-        </Stack>
+       // <SafeAreaView className="flex-1">
+        <View style={{
+                flex:1,
+                marginTop: insets.top
+            }}
+        >
+            <Slot />
+        </View>
+       
+       
     )
 }
 
-export default AuthLayout
+export default RootLayout
