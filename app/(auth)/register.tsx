@@ -15,7 +15,7 @@ import { useLoader } from "@/hooks/useLoader"
 
 const Register = () => {
   const router = useRouter()
-  const { showLoader, hideLoader } = useLoader()
+  const { showLoader, hideLoader  , isLoading} = useLoader()
 
   const [fullname, setFullname] = useState("")
   const [email, setEmail] = useState("")
@@ -23,7 +23,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
 
   const handleRegister = async () => {
-    if (!fullname || !email || !password || !confirmPassword) {
+    if (!fullname || !email || !password || !confirmPassword || isLoading) {
       Toast.show({
         type: "error",
         text1: "Missing fields",
