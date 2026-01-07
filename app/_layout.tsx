@@ -1,7 +1,9 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Slot } from 'expo-router'
+import Toast from 'react-native-toast-message'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { LoaderProvider } from '@/context/LoaderContext'
 
 const RootLayout = () => {
     const insets = useSafeAreaInsets()
@@ -9,13 +11,16 @@ const RootLayout = () => {
 
     return (
        // <SafeAreaView className="flex-1">
-        <View style={{
+        <LoaderProvider>
+            <View style={{
                 flex:1,
                 marginTop: insets.top
             }}
         >
             <Slot />
+            <Toast />
         </View>
+        </LoaderProvider>
        
        
     )
