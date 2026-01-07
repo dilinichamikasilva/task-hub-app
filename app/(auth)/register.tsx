@@ -1,9 +1,43 @@
-import { View, Text, TextInput, Pressable, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, Pressable, TouchableOpacity, TouchableWithoutFeedback, Keyboard , Alert } from 'react-native'
+import React , { useState} from 'react'
 import { useRouter } from 'expo-router'
+import { registerUser } from '@/services/authService'
 
 const Register = () => {
   const router = useRouter()
+
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+
+    if (!fullname || !email || !password || !confirmPassword) {
+      Alert.alert("Error", "All fields are required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await registerUser(fullname, email, password);
+
+      Alert.alert("Success", "Account created successfully");
+      router.replace("/login"); 
+    } catch (error: any) {
+      Alert.alert("Registration failed", error.message);
+    } finally {
+      setLoading(false);
+    }
+    
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} >
@@ -18,32 +52,44 @@ const Register = () => {
             <TextInput
             placeholder="Name"
             placeholderTextColor="#9CA3AF"
+            value={fullname}
+            onChangeText={setFullname}
             className="border border-gray-300 rounded-xl px-4 py-3 mb-4 text-gray-800"
             />
 
             <TextInput
             placeholder="Email"
             placeholderTextColor="#9CA3AF"
+            value={email}
+            onChangeText={setEmail}
             className="border border-gray-300 rounded-xl px-4 py-3 mb-4 text-gray-800"
             />
 
             <TextInput
             placeholder="Password"
             placeholderTextColor="#9CA3AF"
+            value={password}
+            onChangeText={setPassword}
             secureTextEntry
             className="border border-gray-300 rounded-xl px-4 py-3 mb-6 text-gray-800"
             />
 
             <TextInput
-            placeholder="Confirm PAssword"
+            placeholder="Confirm Password"
             placeholderTextColor="#9CA3AF"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
             secureTextEntry
             className="border border-gray-300 rounded-xl px-4 py-3 mb-6 text-gray-800"
             />
 
-            <Pressable className="bg-blue-600 py-3 rounded-xl active:bg-blue-700">
+            <Pressable 
+                onPress={handleRegister}
+                disabled={loading}
+                className="bg-blue-600 py-3 rounded-xl active:bg-blue-700"
+                >
                 <Text className="text-white text-center font-semibold text-lg">
-                    Register
+                    {loading ? "Registering..." : "Register"}
                 </Text>
             </Pressable>
 
