@@ -4,6 +4,7 @@ import { Slot } from 'expo-router'
 import Toast from 'react-native-toast-message'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LoaderProvider } from '@/context/LoaderContext'
+import { AuthProvider } from '@/context/Authcontext'
 
 const RootLayout = () => {
     const insets = useSafeAreaInsets()
@@ -12,14 +13,15 @@ const RootLayout = () => {
     return (
        // <SafeAreaView className="flex-1">
         <LoaderProvider>
-            <View style={{
-                flex:1,
-                marginTop: insets.top
-            }}
-        >
-            <Slot />
-            <Toast />
-        </View>
+            <AuthProvider>
+                <View style={{
+                    flex:1,
+                    marginTop: insets.top
+                }}>
+                    <Slot />
+                    <Toast />
+                </View>
+            </AuthProvider>
         </LoaderProvider>
        
        
